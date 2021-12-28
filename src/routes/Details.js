@@ -1,15 +1,19 @@
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
+import { GrLike } from 'react-icons/gr';
+import {FcDislike} from 'react-icons/fc';
 
 const GET_MOVIE = gql`
   query getMovie($id: Int!) {
     movie(id: $id) {
+      id
       title
       medium_cover_image
       description_intro
       rating
       language
+      isLiked @client
     }
     suggestions(id: $id) {
       id
@@ -63,7 +67,7 @@ export const AboutMovie = () => {
   return (
     <Container>
       <Column>
-        <Title>{data?.movie?.title}</Title>
+        <Title>{loading ? "Загрузка" : `${data?.movie?.title} ${data?.movie?.isLiked ? "♥" : "😞"}`}</Title>
         <Subtitle>
           {data?.movie?.language} · {data?.movie?.rating}
         </Subtitle>
